@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventory System Dashboard</title>
+
+  <!-- Google Font -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="css/dashboard.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">IS</div>
+        <div>
+          <h2 style="margin:0">Inventory System</h2>
+          <div style="font-size:13px;color:#9fb6d6">🌐 Smart Stock Hub</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+      
+        <a href="product.html">Products</a>
+        <!-- <a href="#">Suppliers</a> -->
+        <a href="staff.html">Staff</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="grid">
+        <div class="card"><h3>Total Items</h3><p id="totalItems">0</p></div>
+        <div class="card"><h3>Total Orders</h3><p id="totalOrders">0</p></div>
+        <div class="card"><h3>Bookings</h3><p id="totalBookings">0</p></div>
+        <div class="card"><h3>Staff Members</h3><p id="staffCount">0</p></div>
+      </div>
+
+      <section class="card">
+        <h2>Inventory Overview</h2>
+        <canvas id="inventoryChart" height="150"></canvas>
+      </section>
+
+      <section class="card">
+        <h2>Order Process Status</h2>
+        <div style="width:500px;margin:auto;">
+          <canvas id="orderChart"></canvas>
+        </div>
+
+        <div class="info-cards">
+          <div class="info-card">
+            <i class="fa-solid fa-check-circle" style="color:#10b981;"></i>
+            <div><h4>98</h4><p>Processed Orders</p></div>
+          </div>
+          <div class="info-card">
+            <i class="fa-solid fa-xmark-circle" style="color:#ef4444;"></i>
+            <div><h4>5</h4><p>Cancelled Bookings</p></div>
+          </div>
+          <div class="info-card">
+            <i class="fa-solid fa-clock" style="color:#facc15;"></i>
+            <div><h4>21</h4><p>Pending Bookings</p></div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:24px;">Order Processing Details</h3>
+        <div class="info-cards">
+          <div class="info-card"><i class="fa-solid fa-box" style="color:#3b82f6;"></i><div><h4>20</h4><p>Packed Orders</p></div></div>
+          <div class="info-card"><i class="fa-solid fa-truck" style="color:#06b6d4;"></i><div><h4>30</h4><p>Shipped Orders</p></div></div>
+          <div class="info-card"><i class="fa-solid fa-house-circle-check" style="color:#10b981;"></i><div><h4>40</h4><p>Delivered Orders</p></div></div>
+          <div class="info-card"><i class="fa-solid fa-circle-pause" style="color:#fbbf24;"></i><div><h4>25</h4><p>Pending Orders</p></div></div>
+        </div>
+      </section>
+
+      <!-- NEW SECTION: Revenue & Performance -->
+      <section class="card">
+        <h2>Revenue & Performance Overview</h2>
+
+        <div class="info-cards">
+          <div class="info-card"><i class="fa-solid fa-sack-dollar" style="color:#22c55e;"></i><div><h4>৳2.5M</h4><p>Total Revenue</p></div></div>
+          <div class="info-card"><i class="fa-solid fa-chart-line" style="color:#06b6d4;"></i><div><h4>18%</h4><p>Growth Rate</p></div></div>
+          <div class="info-card"><i class="fa-solid fa-coins" style="color:#fbbf24;"></i><div><h4>৳850K</h4><p>Net Profit</p></div></div>
+          <div class="info-card"><i class="fa-solid fa-user-group" style="color:#a78bfa;"></i><div><h4>1.2K</h4><p>Active Customers</p></div></div>
+        </div>
+
+        <canvas id="revenueChart" height="200" style="margin-top:20px;"></canvas>
+      </section>
+    </main>
+  </div>
+<!-- POPUP MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <i class="fa-solid fa-info-circle" style="font-size:28px;color:#06b6d4;margin-right:8px;"></i>
+      <h3 id="modalTitle">Title</h3>
+    </div>
+    <p id="modalContent">Content goes here...</p>
+    <button class="close-btn" id="closeModal">Close</button>
+  </div>
+</div>
+
+   <script src="js/dashboard.js"></script>
+</body>
+</html>
