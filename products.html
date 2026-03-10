@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Stock Hub — Admin Product Management</title>
+
+  <!-- icons + Chart.js -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/product.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+ 
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">SS</div>
+      <div>
+        <h1>Smart Stock Hub</h1>
+        <div class="sub">Admin Product Management</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:12px; align-items:center;">
+      <div class="sub">Signed in as <strong>Admin</strong></div>
+<button class="btn alt icon-btn" onclick="goToDashboard()" title="Go to Dashboard">
+  <i class="fa fa-home"></i>
+</button>
+
+
+
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="layout">
+
+      <!-- LEFT -->
+      <div>
+        <!-- Overview -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:16px; font-weight:700">Overview</div>
+              <div class="muted-tiny">At-a-glance inventory & product stats</div>
+            </div>
+            <div class="note">Manage products, packing, broken items & improvements</div>
+          </div>
+
+          <div class="overview-cards" style="margin-top:12px">
+            <div class="stat">
+              <div class="num" id="statTotalProducts">0</div>
+              <div class="lbl">Total Products</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="statTotalStock">0</div>
+              <div class="lbl">Total Stock</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="statBroken">0</div>
+              <div class="lbl">Broken Items</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="statImprovements">0</div>
+              <div class="lbl">Improvements</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="statAvg">৳0</div>
+              <div class="lbl">Avg Price</div>
+            </div>
+          </div>
+
+          <div class="charts">
+            <div class="chart-card" style="flex:1">
+              <div style="font-size:13px; color:var(--muted); margin-bottom:6px">Stock per Product</div>
+              <canvas id="chartStock" height="200"></canvas>
+            </div>
+            <div class="chart-card" style="width:260px">
+              <div style="font-size:13px; color:var(--muted); margin-bottom:6px">Broken vs Improved</div>
+              <canvas id="chartRatio" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="card" style="margin-top:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="section-title">Available Products</div>
+            </div>
+            <div class="note">Click any card to preview details on the right</div>
+          </div>
+
+          <div class="products-grid" id="productsGrid"></div>
+        </div>
+
+        <!-- Upcoming -->
+        <div class="card" style="margin-top:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="section-title">Upcoming Products</div>
+            <div class="note">Coming Soon — no stock yet</div>
+          </div>
+
+          <div class="products-grid" id="upcomingGrid"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT / ASIDE -->
+      <aside class="aside">
+        <div class="card preview">
+          <img id="previewImg" src="gadgets.jpeg" alt="">
+          <div class="info">
+            <h3 id="previewName">Select a product</h3>
+            <div class="muted-tiny" id="previewSupplier">Preview information will appear here</div>
+            <div style="margin-top:8px; display:flex; gap:8px">
+              <button class="btn small" onclick="openAdd()">+ Add Product</button>
+              <button class="btn alt small" onclick="openEditFromPreview()">✎ Edit</button>
+              <button class="btn alt small" onclick="openDeleteFromPreview()">🗑 Delete</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">Packing Process</div>
+            <div class="muted-tiny">Quick notes</div>
+          </div>
+          <div id="packingNote" class="note" style="margin-top:8px">No packing info — edit a product to add steps.</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">Actions</div>
+            <div class="muted-tiny">Add / Edit / Delete</div>
+          </div>
+          <div class="actions-area" style="margin-top:10px">
+            <button class="btn" onclick="openAdd()">Add Product</button>
+            <button class="btn alt" onclick="openBulkExport()">Export Inventory</button>
+            <button class="btn alt" onclick="resetDemo()">Reset Demo</button>
+          </div>
+          <div style="margin-top:12px" class="note">Changes are client-side only. I can wire backend later.</div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+  <!-- MODALS (one backdrop used for all) -->
+  <div id="backdrop" class="backdrop" onclick="backdropClick(event)">
+    <!-- Details / Edit Modal -->
+    <div id="modalDetail" class="modal" style="display:none; position:relative;">
+      <button class="close-x" onclick="closeModal()">✕</button>
+      <div class="grid2">
+        <div>
+          <img id="modalImg" src="" alt="">
+        </div>
+        <div>
+          <h2 id="modalTitle">Product</h2>
+          <div class="muted-tiny" id="modalSupplier">Supplier • Company</div>
+          <p style="margin-top:8px"><strong>Price:</strong> <span id="modalPrice">৳0</span></p>
+          <p><strong>Imported From:</strong> <span id="modalImport">—</span></p>
+          <p><strong>Material:</strong> <span id="modalMaterial">—</span></p>
+          <p><strong>Stock:</strong> <span id="modalStock">0</span></p>
+
+          <div style="margin-top:12px; display:flex; gap:8px">
+            <button class="btn" onclick="openEditFromModal()">Edit</button>
+            <button class="btn alt" onclick="markBrokenModal()">Mark Broken</button>
+            <button class="btn alt" onclick="improveModal()">Add Improvement</button>
+          </div>
+
+          <div style="margin-top:14px">
+            <div style="font-weight:700; margin-bottom:6px">Packing steps</div>
+            <div class="note" id="modalPacking">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add / Edit Modal -->
+    <div id="modalForm" class="modal" style="display:none; position:relative;">
+      <button class="close-x" onclick="closeModal()">✕</button>
+      <h2 id="formTitle">Add Product</h2>
+
+      <div style="display:grid; gap:8px; margin-top:10px">
+        <label>Product name</label>
+        <input id="fName" placeholder="E.g. Wireless Mouse">
+
+        <label>Image URL</label>
+        <input id="fImg" placeholder="paste image link or leave blank for placeholder">
+
+        <div class="row">
+          <div class="col">
+            <label>Price (৳)</label>
+            <input id="fPrice" type="number" placeholder="1599">
+          </div>
+          <div class="col">
+            <label>Stock</label>
+            <input id="fStock" type="number" placeholder="24">
+          </div>
+        </div>
+
+        <label>Supplier</label>
+        <input id="fSupplier" placeholder="Supplier name">
+
+        <label>Company / Brand</label>
+        <input id="fCompany" placeholder="Company">
+
+        <div class="row">
+          <div class="col">
+            <label>Imported From</label>
+            <input id="fImport" placeholder="Country">
+          </div>
+          <div class="col">
+            <label>Material</label>
+            <input id="fMaterial" placeholder="Material">
+          </div>
+        </div>
+
+        <label>Packing steps (comma separated)</label>
+        <input id="fPacking" placeholder="Bubble wrap, Box, Seal">
+
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button class="btn" onclick="saveForm()">Save</button>
+          <button class="btn alt" onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete confirm -->
+    <div id="modalDelete" class="modal" style="display:none; position:relative; max-width:420px;">
+      <button class="close-x" onclick="closeModal()">✕</button>
+      <h2>Delete product</h2>
+      <p class="note">Are you sure you want to remove <strong id="delName">this product</strong> from inventory? This action cannot be undone in demo.</p>
+      <div style="display:flex; gap:8px; margin-top:10px">
+        <button class="btn" onclick="confirmDelete()">Yes, Delete</button>
+        <button class="btn alt" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+   <script src="js/product.js"></script>
+</body>
+</html>
