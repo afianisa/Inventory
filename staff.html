@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<title>Employee Dashboard with Payment System</title>
+<link rel="stylesheet" href="css/staff.css">
+</head>
+<body>
+<a href="dashboard.html" id="dashboardBtn" title="Back to Dashboard">
+  <i class="fas fa-home"></i>
+</a>
+<div id="container">
+  <nav id="sidebar" aria-label="Sidebar with employee sections and salary chart">
+    <h2>Employees</h2>
+    <div class="section-list" role="list">
+      <button class="section-btn active" data-section="fulltime" role="listitem">Full-time</button>
+      <button class="section-btn" data-section="parttime" role="listitem">Part-time</button>
+      <button class="section-btn" data-section="onleave" role="listitem">On Leave</button>
+    </div>
+    <div id="salaryChartContainer" aria-label="Salary payment status chart">
+      <h3>Salary Status</h3>
+      <canvas id="salaryChart" aria-describedby="salaryChartDesc"></canvas>
+      <div id="salaryChartDesc" style="display:none;">
+        Pie chart showing number of employees paid vs pending salary
+      </div>
+    </div>
+  </nav>
+
+  <main id="mainContent" tabindex="0" aria-live="polite" aria-label="Employee list container">
+    <!-- Employee cards injected by JS -->
+  </main>
+</div>
+
+<!-- Employee Detail Modal -->
+<div id="employeeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+  <div class="modal-content">
+    <button id="modalClose" aria-label="Close modal">&times;</button>
+    <img src="" alt="Employee photo" class="avatar" id="modalAvatar" />
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+    <p><strong>Salary:</strong> $<span id="modalSalary"></span></p>
+    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+    <button id="paySalaryBtn">Pay Salary</button>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div id="paymentModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle" aria-describedby="paymentDesc">
+  <div class="modal-content">
+    <button id="paymentClose" aria-label="Close payment modal">&times;</button>
+    <h3 id="paymentTitle">Debit Payment</h3>
+    <p id="paymentDesc">Complete the payment for the selected employee</p>
+    <form id="paymentForm">
+      <label for="cardName">Cardholder Name</label>
+      <input type="text" id="cardName" name="cardName" required autocomplete="cc-name" placeholder="John Doe" />
+      
+      <label for="cardNumber">Card Number</label>
+      <input type="text" id="cardNumber" name="cardNumber" required pattern="\d{16}" maxlength="16" placeholder="1234 5678 9012 3456" inputmode="numeric" autocomplete="cc-number" />
+
+      <label for="expiryDate">Expiry Date (MM/YY)</label>
+      <input type="text" id="expiryDate" name="expiryDate" required pattern="(0[1-9]|1[0-2])\/\d{2}" maxlength="5" placeholder="08/25" autocomplete="cc-exp" />
+
+      <label for="cvv">CVV</label>
+      <input type="password" id="cvv" name="cvv" required pattern="\d{3}" maxlength="3" placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
+
+      <button type="submit">Pay $<span id="paymentAmount">0</span></button>
+    </form>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
+  <div class="modal-content">
+    <h3 id="confirmTitle">Payment Cleared!</h3>
+    <p id="confirmDesc">The salary payment has been successfully processed.</p>
+    <button id="confirmClose" style="margin-top: 20px; background: var(--accent-2); color: var(--bg-1); font-weight: 700; padding: 10px 25px; border-radius: 20px; border:none; cursor:pointer;">OK</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/staff.js"></script>
+
+
+</body>
+</html>
